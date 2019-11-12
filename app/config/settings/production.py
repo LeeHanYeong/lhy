@@ -3,6 +3,7 @@ from .base import *
 # Secrets
 AWS_SECRETS_MANAGER_SECRETS_SECTION = 'washble:production'
 DATABASES = SECRETS['DATABASES']
+DBBACKUP_STORAGE_OPTIONS['bucket_name'] = SECRETS['AWS_STORAGE_BUCKET_NAME']
 
 DEBUG = True
 ALLOWED_HOSTS += ['*']

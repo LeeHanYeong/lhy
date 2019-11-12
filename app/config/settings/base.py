@@ -31,6 +31,13 @@ AWS_DEFAULT_ACL = 'private'
 AWS_BUCKET_ACL = 'private'
 AWS_AUTO_CREATE_BUCKET = True
 
+# django-dbbackup
+DBBACKUP_STORAGE = 'config.storages.DBStorage'
+DBBACKUP_STORAGE_OPTIONS = {
+    'access_key': SECRETS['AWS_S3_ACCESS_KEY_ID'],
+    'secret_key': SECRETS['AWS_S3_SECRET_ACCESS_KEY'],
+}
+
 # Auth
 AUTH_USER_MODEL = 'members.User'
 AUTHENTICATION_BACKENDS = [
@@ -131,6 +138,7 @@ USER_APPS = [
 PYPI_APPS = [
     'admin_reorder',
     'adminsortable2',
+    'dbbackup',
     'corsheaders',
     'django_cleanup.apps.CleanupConfig',
     'django_extensions',
