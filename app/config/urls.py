@@ -1,5 +1,5 @@
 """
-Washble URL Configuration
+lhy URL Configuration
 """
 import re
 from collections import OrderedDict
@@ -15,8 +15,8 @@ from rest_framework import permissions
 
 from . import views
 
-admin.site.site_title = 'Washble'
-admin.site.site_header = 'Washble 관리자 페이지'
+admin.site.site_title = 'lhy'
+admin.site.site_header = 'lhy 관리자 페이지'
 
 
 class SchemaGenerator(OpenAPISchemaGenerator):
@@ -36,9 +36,9 @@ class SchemaGenerator(OpenAPISchemaGenerator):
 
 BaseSchemaView = get_schema_view(
     openapi.Info(
-        title='Washble API',
+        title='lhy API',
         default_version='v1',
-        description='Washble API Documentation',
+        description='lhy API Documentation',
         contact=openapi.Contact(email='dev@lhy.kr'),
     ),
     public=True,
