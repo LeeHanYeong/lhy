@@ -1,9 +1,10 @@
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
-from django.core.exceptions import ValidationError
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django_fields import DefaultStaticImageField
 from phonenumber_field.modelfields import PhoneNumberField
+from polymorphic.managers import PolymorphicManager
+from polymorphic.models import PolymorphicModel
 
 from utils.django.mixins import DeletedFlagManager, DeletedFlagMixin
 
@@ -13,26 +14,19 @@ __all__ = (
 )
 
 
-class UserManager(DeletedFlagManager, BaseUserManager):
-    def create_user(self, email, username=None, password=None, **extra_fields):
-        if extra_fields.get('type') == User.TYPE_EMAIL:
-            username = email
-        elif username is None:
-            raise ValidationError('사용자 생성 필수값(username)이 주어지지 않았습니다')
-        return super().create_user(username, email, password, **extra_fields)
+class UserManager(PolymorphicManager, DeletedFlagManager, BaseUserManager):
+    pass
 
 
-class User(AbstractUser, DeletedFlagMixin, TimeStampedModel):
-    TYPE_KAKAO, TYPE_FACEBOOK, TYPE_EMAIL = 'kakao', 'facebook', 'email'
+class User(PolymorphicModel, AbstractUser, DeletedFlagMixin, TimeStampedModel):
+    TYPE_WPS = 'wps'
     TYPE_CHOICES = (
-        (TYPE_KAKAO, '카카오'),
-        (TYPE_FACEBOOK, '페이스북'),
-        (TYPE_EMAIL, '이메일'),
+        (TYPE_WPS, '웹 프로그래밍 스쿨'),
     )
     first_name = None
     last_name = None
     name = models.CharField('이름', max_length=20, blank=True)
-    type = models.CharField('유형', max_length=10, choices=TYPE_CHOICES, default=TYPE_EMAIL)
+    type = models.CharField('분류', choices=TYPE_CHOICES, max_length=20)
     img_profile = DefaultStaticImageField(
         '프로필 이미지', upload_to='user', default_image_path='images/profile.jpg', blank=True)
     nickname = models.CharField('닉네임', max_length=20, unique=True, blank=True, null=True)
@@ -55,8 +49,6 @@ class User(AbstractUser, DeletedFlagMixin, TimeStampedModel):
         return self.name
 
     def save(self, *args, **kwargs):
-        if self.type == self.TYPE_EMAIL:
-            self.username = self.email
         super().save(*args, **kwargs)
 
     def perform_delete(self):
@@ -85,4 +77,3 @@ class User(AbstractUser, DeletedFlagMixin, TimeStampedModel):
                 user.save()
                 index += 1
             self.username = get_deleted_username(index)
-

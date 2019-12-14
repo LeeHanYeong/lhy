@@ -43,7 +43,7 @@ AUTH_USER_MODEL = 'members.User'
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    'members.backends.SettingsBackend',
+    'apps.members.backends.SettingsBackend',
 ]
 LOGIN_REDIRECT_URL = 'index'
 DEFAULT_USERS = {
@@ -134,11 +134,17 @@ ADMIN_REORDER = (
     {'app': 'members', 'label': '사용자 관리', 'models': (
         {'model': 'members.User', 'label': '사용자'},
     )},
+    {'app': 'polls', 'label': '설문조사 관리', 'models': (
+        {'model': 'polls.Poll', 'label': '설문조사'},
+        {'model': 'polls.Choice', 'label': '선택지'},
+        {'model': 'polls.Vote', 'label': '투표'},
+    )},
 )
 
 # Apps
 USER_APPS = [
-    'members',
+    'apps.members',
+    'apps.polls',
 ]
 PYPI_APPS = [
     'allauth',
@@ -158,6 +164,7 @@ PYPI_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'phonenumber_field',
+    'polymorphic',
 ]
 DJANGO_APPS = [
     'django.contrib.admin',

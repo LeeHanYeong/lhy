@@ -6,12 +6,12 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    list_display = ('username', 'name', 'email', 'type', 'pk')
+    list_display = ('username', 'name', 'email', 'pk')
     list_filter = ('is_staff', 'groups')
     fieldsets = (
         (None, {
             'fields': (
-                'username', 'type', 'password',
+                'username', 'password',
             )
         }),
         ('개인정보', {

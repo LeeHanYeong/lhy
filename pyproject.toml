@@ -32,8 +32,11 @@ django-default-imagefield = "^0.5.5"
 gunicorn = "^19.9"
 django-dbbackup = "<3.2"
 django-allauth = "^0.40.0"
+subdomains = "^2.1.1"
+django-polymorphic = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
+notebook = "^6.0.2"
 
 [build-system]
 requires = ["poetry>=0.12"]
